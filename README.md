@@ -22,3 +22,16 @@ SpringCloud 微服务项目
 
 
 [微服务项目实战链接](https://www.oop.fun/geek/SpringCloud微服务项目实战)
+
+
+
+服务治理
+
+- 注册
+- 发现
+
+负载均衡
+
+- 服务端负载均衡
+
+- 客户端负载均衡 √

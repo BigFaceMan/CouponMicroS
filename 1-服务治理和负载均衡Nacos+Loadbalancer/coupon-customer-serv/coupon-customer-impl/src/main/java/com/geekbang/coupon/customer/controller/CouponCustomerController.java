@@ -1,5 +1,7 @@
 package com.geekbang.coupon.customer.controller;
 
+import com.alibaba.cloud.nacos.discovery.NacosServiceDiscovery;
+import com.alibaba.nacos.api.exception.NacosException;
 import com.geekbang.coupon.calculation.api.beans.ShoppingCart;
 import com.geekbang.coupon.calculation.api.beans.SimulationOrder;
 import com.geekbang.coupon.calculation.api.beans.SimulationResponse;
@@ -10,6 +12,7 @@ import com.geekbang.coupon.customer.service.intf.CouponCustomerService;
 import com.geekbang.coupon.template.api.beans.CouponInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,10 +25,23 @@ public class CouponCustomerController {
 
     @Autowired
     private CouponCustomerService customerService;
+    @Autowired
+    private NacosServiceDiscovery nacosServiceDiscovery;
 
     @PostMapping("requestCoupon")
     public Coupon requestCoupon(@Valid @RequestBody RequestCoupon request) {
         return customerService.requestCoupon(request);
+    }
+
+    @GetMapping("services")
+    public List<String> getService() throws NacosException {
+        List<String> services = nacosServiceDiscovery.getServices();
+        return services;
+    }
+    @GetMapping("instance")
+    public List<ServiceInstance> getInstance(@RequestParam String serviceId) throws NacosException {
+        List<ServiceInstance> instances = nacosServiceDiscovery.getInstances(serviceId);
+        return instances;
     }
 
     // 用户删除优惠券
